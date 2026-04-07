@@ -1,6 +1,6 @@
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-testpaths = ["ha-integration/custom_components/eebus/tests"]
+testpaths = ["custom_components/eebus/tests"]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -12,3 +12,4 @@ exclude_lines = [
 [tool.ruff]
 target-version = "py312"
 line-length = 120
+exclude = ["custom_components/eebus/generated"]
