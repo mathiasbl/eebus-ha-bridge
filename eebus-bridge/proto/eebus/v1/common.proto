@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package eebus.v1;
+
+option go_package = "github.com/volschin/eebus-bridge/gen/proto/eebus/v1;eebusv1";
+
+import "google/protobuf/timestamp.proto";
+
+message Empty {}
+
+message DeviceRequest {
+  string ski = 1;
+}
+
+message LoadLimit {
+  double value_watts = 1;
+  int64 duration_seconds = 2;
+  bool is_active = 3;
+  bool is_changeable = 4;
+}
+
+message PowerMeasurement {
+  double watts = 1;
+  google.protobuf.Timestamp timestamp = 2;
+}
+
+message MeasurementEntry {
+  string type = 1;
+  double value = 2;
+  string unit = 3;
+  google.protobuf.Timestamp timestamp = 4;
+}

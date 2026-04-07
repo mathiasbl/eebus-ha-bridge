@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package eebus.v1;
+
+option go_package = "github.com/volschin/eebus-bridge/gen/proto/eebus/v1;eebusv1";
+
+import "eebus/v1/common.proto";
+import "google/protobuf/timestamp.proto";
+
+service MonitoringService {
+  rpc GetPowerConsumption(DeviceRequest) returns (PowerMeasurement);
+  rpc GetEnergyConsumed(DeviceRequest) returns (EnergyMeasurement);
+  rpc GetMeasurements(DeviceRequest) returns (MeasurementList);
+  rpc SubscribeMeasurements(DeviceRequest) returns (stream MeasurementEvent);
+}
+
+message EnergyMeasurement {
+  double kilowatt_hours = 1;
+  google.protobuf.Timestamp timestamp = 2;
+}
+
+message MeasurementList {
+  repeated MeasurementEntry measurements = 1;
+}
+
+message MeasurementEvent {
+  string ski = 1;
+  MeasurementEventType event_type = 2;
+  oneof data {
+    PowerMeasurement power = 3;
+    EnergyMeasurement energy = 4;
+  }
+}
+
+enum MeasurementEventType {
+  MEASUREMENT_EVENT_UNSPECIFIED = 0;
+  MEASUREMENT_EVENT_POWER_UPDATED = 1;
+  MEASUREMENT_EVENT_ENERGY_UPDATED = 2;
+}

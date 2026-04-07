@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package eebus.v1;
+
+option go_package = "github.com/volschin/eebus-bridge/gen/proto/eebus/v1;eebusv1";
+
+import "eebus/v1/common.proto";
+
+service DeviceService {
+  rpc GetStatus(Empty) returns (ServiceStatus);
+  rpc ListDiscoveredDevices(Empty) returns (ListDevicesResponse);
+  rpc RegisterRemoteSKI(RegisterSKIRequest) returns (Empty);
+  rpc UnregisterRemoteSKI(DeviceRequest) returns (Empty);
+  rpc GetPairingStatus(DeviceRequest) returns (PairingStatus);
+  rpc ListPairedDevices(Empty) returns (ListPairedDevicesResponse);
+  rpc SubscribeDeviceEvents(Empty) returns (stream DeviceEvent);
+}
+
+message ServiceStatus {
+  bool running = 1;
+  string local_ski = 2;
+}
+
+message DiscoveredDevice {
+  string ski = 1;
+  string brand = 2;
+  string model = 3;
+  string serial = 4;
+  string device_type = 5;
+  string host = 6;
+}
+
+message ListDevicesResponse {
+  repeated DiscoveredDevice devices = 1;
+}
+
+message RegisterSKIRequest {
+  string ski = 1;
+}
+
+message PairingStatus {
+  string ski = 1;
+  PairingState state = 2;
+}
+
+enum PairingState {
+  PAIRING_STATE_UNSPECIFIED = 0;
+  PAIRING_STATE_PENDING = 1;
+  PAIRING_STATE_WAITING_FOR_TRUST = 2;
+  PAIRING_STATE_TRUSTED = 3;
+  PAIRING_STATE_DENIED = 4;
+}
+
+message PairedDevice {
+  string ski = 1;
+  string brand = 2;
+  string model = 3;
+  string serial = 4;
+  string device_type = 5;
+  repeated string supported_use_cases = 6;
+}
+
+message ListPairedDevicesResponse {
+  repeated PairedDevice devices = 1;
+}
+
+message DeviceEvent {
+  string ski = 1;
+  DeviceEventType event_type = 2;
+}
+
+enum DeviceEventType {
+  DEVICE_EVENT_UNSPECIFIED = 0;
+  DEVICE_EVENT_CONNECTED = 1;
+  DEVICE_EVENT_DISCONNECTED = 2;
+  DEVICE_EVENT_TRUST_REMOVED = 3;
+}
