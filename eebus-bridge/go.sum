@@ -1,3 +1,5 @@
+github.com/enbility/ship-go v0.6.0 h1:1ft5NJJHqqGU3/ryYwQj8xBYJLFbf0q2cP9mjlYHlgw=
+github.com/enbility/ship-go v0.6.0/go.mod h1:JJp8EQcJhUhTpZ2LSEU4rpdaM3E2n08tswWFWtmm/wU=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=

@@ -1,0 +1,102 @@
+package certs_test
+
+import (
+	"crypto/tls"
+	"os"
+	"path/filepath"
+	"testing"
+
+	"github.com/volschin/eebus-bridge/internal/certs"
+)
+
+func TestAutoGenerate(t *testing.T) {
+	dir := t.TempDir()
+
+	cert, err := certs.EnsureCertificate("", "", dir)
+	if err != nil {
+		t.Fatalf("EnsureCertificate failed: %v", err)
+	}
+
+	if len(cert.Certificate) == 0 {
+		t.Fatal("certificate has no data")
+	}
+
+	// Verify files were persisted
+	if _, err := os.Stat(filepath.Join(dir, "cert.pem")); err != nil {
+		t.Errorf("cert.pem not persisted: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(dir, "key.pem")); err != nil {
+		t.Errorf("key.pem not persisted: %v", err)
+	}
+}
+
+func TestLoadExisting(t *testing.T) {
+	dir := t.TempDir()
+
+	// Generate first
+	cert1, err := certs.EnsureCertificate("", "", dir)
+	if err != nil {
+		t.Fatalf("first EnsureCertificate failed: %v", err)
+	}
+
+	// Load again — should return same cert (from disk)
+	cert2, err := certs.EnsureCertificate("", "", dir)
+	if err != nil {
+		t.Fatalf("second EnsureCertificate failed: %v", err)
+	}
+
+	if !certEqual(cert1, cert2) {
+		t.Error("reloaded cert differs from original")
+	}
+}
+
+func TestLoadFromExplicitFiles(t *testing.T) {
+	dir := t.TempDir()
+
+	// Generate to get valid cert/key files
+	_, err := certs.EnsureCertificate("", "", dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	certFile := filepath.Join(dir, "cert.pem")
+	keyFile := filepath.Join(dir, "key.pem")
+
+	cert, err := certs.EnsureCertificate(certFile, keyFile, "")
+	if err != nil {
+		t.Fatalf("EnsureCertificate with explicit files failed: %v", err)
+	}
+
+	if len(cert.Certificate) == 0 {
+		t.Fatal("certificate has no data")
+	}
+}
+
+func TestGetSKI(t *testing.T) {
+	dir := t.TempDir()
+	cert, err := certs.EnsureCertificate("", "", dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ski, err := certs.SKIFromCertificate(cert)
+	if err != nil {
+		t.Fatalf("SKIFromCertificate failed: %v", err)
+	}
+
+	if len(ski) == 0 {
+		t.Error("SKI is empty")
+	}
+}
+
+func certEqual(a, b tls.Certificate) bool {
+	if len(a.Certificate) != len(b.Certificate) {
+		return false
+	}
+	for i := range a.Certificate {
+		if len(a.Certificate[i]) != len(b.Certificate[i]) {
+			return false
+		}
+	}
+	return true
+}
