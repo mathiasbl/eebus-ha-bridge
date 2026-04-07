@@ -1,0 +1,13 @@
+grpc:
+  port: 50051
+
+eebus:
+  port: 4712
+  vendor: "HomeAssistant"
+  brand: "eebus-bridge"
+  model: "eebus-bridge"
+  serial: "ha-001"
+
+certificates:
+  auto_generate: true
+  storage_path: "/data/certs"
