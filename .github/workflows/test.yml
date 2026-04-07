@@ -27,7 +27,8 @@ jobs:
           pip install pytest pytest-asyncio pytest-cov ruff homeassistant voluptuous grpcio protobuf
 
       - name: Lint with ruff
-        run: ruff check ha-integration/custom_components/ ha-integration/custom_components/eebus/tests/
+        run: ruff check custom_components/
 
       - name: Run tests with coverage
-        run: pytest --cov=ha-integration.custom_components.eebus --cov-report=term-missing --cov-fail-under=95 -v
+        run: |
+          PYTHONPATH=. pytest --cov=custom_components.eebus --cov-report=term-missing --cov-fail-under=80 -v

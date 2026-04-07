@@ -2,8 +2,6 @@
 
 from unittest.mock import MagicMock
 
-import pytest
-
 from custom_components.eebus.sensor import (
     EebusPowerSensor,
 )

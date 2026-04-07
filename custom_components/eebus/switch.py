@@ -10,9 +10,10 @@ from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN, PARALLEL_UPDATES
 from .coordinator import EebusCoordinator
 from .entity import EebusEntity
+
+PARALLEL_UPDATES = 0  # Coordinator-based, no per-entity polling
 
 
 async def async_setup_entry(

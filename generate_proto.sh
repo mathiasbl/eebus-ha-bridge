@@ -2,7 +2,7 @@
 # Generate Python gRPC stubs from protobuf definitions
 set -euo pipefail
 
-PROTO_DIR="../eebus-bridge/proto"
+PROTO_DIR="eebus-bridge/proto"
 OUT_DIR="custom_components/eebus/generated"
 
 mkdir -p "$OUT_DIR"

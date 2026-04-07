@@ -1,7 +1,5 @@
 """Tests for the EEBUS config flow."""
 
-import pytest
-
 from custom_components.eebus.config_flow import EebusConfigFlow
 from custom_components.eebus.const import DOMAIN
 
